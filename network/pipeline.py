@@ -91,7 +91,8 @@ class PipelineFlownet:
 		epes = []
 		batch_size = img1.shape[0]
 		if mask is None:
-			mask = np.full(shape = (batch_size, 1, 1, 1), fill_value = 255, dtype = np.uint8)
+			#mask = np.full(shape = (batch_size, 1, 1, 1), fill_value = 255, dtype = np.uint8)
+			mask = [np.full(shape = (img1[0].shape[0],img1[0].shape[1],1), fill_value = 255, dtype = np.uint8)] * size
 		img1, img2, label, mask = map(lambda x : gluon.utils.split_and_load(x, self.ctx), (img1, img2, label, mask))
 		
 		with autograd.record():
@@ -153,7 +154,8 @@ class PipelineFlownet:
 		size = len(img1)
 		bs = batch_size
 		if mask is None:
-			mask = [np.full(shape = (1, 1, 1), fill_value = 255, dtype = np.uint8)] * size
+			mask = [np.full(shape = (img1[0].shape[0],img1[0].shape[1],1), fill_value = 255, dtype = np.uint8)] * size
+			#mask = [np.full(shape = (1, 1, 1), fill_value = 255, dtype = np.uint8)] * size
 		for j in range(0, size, bs):
 			batch_img1 = img1[j: j + bs]
 			batch_img2 = img2[j: j + bs]
